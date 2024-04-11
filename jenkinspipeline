@@ -1,7 +1,5 @@
 pipeline {
     agent any
-
-    // Define global variables for email notification
     environment {
         EMAIL_RECIPIENT = 'sriramanan646@gmail.com'
         EMAIL_SUBJECT = 'Jenkins Pipeline Status'
