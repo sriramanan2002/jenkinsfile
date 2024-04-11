@@ -1,35 +1,63 @@
-pipeline
-{
-agent any
-stages
-{
-stage('Build')
-{
-steps
-{
-echo "Building the project........"
-}
-}
-stage('Test')
-{
-steps
-{
-echo "Testing the project........."
-}       
-}
-stage('Deploy')
-{
-steps
-{
-echo "Deploying the project......."
-} 
-}
-stage('Release')
-{
-steps
-{
-echo "Releasing the project......."
-} 
-}
-}
+pipeline {
+    agent any
+
+    // Define global variables for email notification
+    environment {
+        EMAIL_RECIPIENT = 'sriramanan646@gmail.com'
+        EMAIL_SUBJECT = 'Jenkins Pipeline Status'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building the project........"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Testing the project........"
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying the project........"
+            }
+        }
+        stage('Release') {
+            steps {
+                echo "Releasing the project........"
+            }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                subject: "${ENV.JOB_NAME} - ${currentBuild.currentResult}: Success",
+                body: """
+                    Pipeline: ${ENV.JOB_NAME}
+                    Build Number: ${currentBuild.number}
+                    Status: Success
+                    
+                    Additional details can be found at: ${currentBuild.absoluteUrl}
+                """,
+                to: "${EMAIL_RECIPIENT}"
+            )
+        }
+
+        failure {
+            emailext (
+                subject: "${ENV.JOB_NAME} - ${currentBuild.currentResult}: Failure",
+                body: """
+                    Pipeline: ${ENV.JOB_NAME}
+                    Build Number: ${currentBuild.number}
+                    Status: Failure
+                    
+                    Additional details can be found at: ${currentBuild.absoluteUrl}
+                """,
+                to: "${EMAIL_RECIPIENT}"
+            )
+        }
+    }
 }
