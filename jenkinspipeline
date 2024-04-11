@@ -32,9 +32,9 @@ pipeline {
     post {
         success {
             emailext (
-                subject: "${ENV.JOB_NAME} - ${currentBuild.currentResult}: Success",
+                subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Success",
                 body: """
-                    Pipeline: ${ENV.JOB_NAME}
+                    Pipeline: ${env.JOB_NAME}
                     Build Number: ${currentBuild.number}
                     Status: Success
                     
@@ -46,9 +46,9 @@ pipeline {
 
         failure {
             emailext (
-                subject: "${ENV.JOB_NAME} - ${currentBuild.currentResult}: Failure",
+                subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Failure",
                 body: """
-                    Pipeline: ${ENV.JOB_NAME}
+                    Pipeline: ${env.JOB_NAME}
                     Build Number: ${currentBuild.number}
                     Status: Failure
                     
