@@ -1,7 +1,8 @@
 pipeline {
     agent any
+
     environment {
-        EMAIL_RECIPIENT = 'gokulrengaraj07@gmail.com'
+        EMAIL_RECIPIENT = 'blackslug69@gmail.com'
         EMAIL_SUBJECT = 'Jenkins Pipeline Status'
     }
 
@@ -17,11 +18,13 @@ pipeline {
                 echo "Testing the project........"
             }
         }
+
         stage('Deploy') {
             steps {
                 echo "Deploying the project........"
             }
         }
+
         stage('Release') {
             steps {
                 echo "Releasing the project........"
@@ -31,31 +34,35 @@ pipeline {
 
     post {
         success {
-            emailext (
-                subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Success",
-                body: """
-                    Pipeline: ${env.JOB_NAME}
-                    Build Number: ${currentBuild.number}
-                    Status: Success
-                    
-                    Additional details can be found at: ${currentBuild.absoluteUrl}
-                """,
-                to: "${EMAIL_RECIPIENT}"
-            )
+            script {
+                emailext (
+                    subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Success",
+                    body: """
+                        Pipeline: ${env.JOB_NAME}
+                        Build Number: ${currentBuild.number}
+                        Status: Success
+
+                        Additional details can be found at: ${currentBuild.absoluteUrl}
+                    """,
+                    to: "${EMAIL_RECIPIENT}"
+                )
+            }
         }
 
         failure {
-            emailext (
-                subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Failure",
-                body: """
-                    Pipeline: ${env.JOB_NAME}
-                    Build Number: ${currentBuild.number}
-                    Status: Failure
-                    
-                    Additional details can be found at: ${currentBuild.absoluteUrl}
-                """,
-                to: "${EMAIL_RECIPIENT}"
-            )
+            script {
+                emailext (
+                    subject: "${env.JOB_NAME} - ${currentBuild.currentResult}: Failure",
+                    body: """
+                        Pipeline: ${env.JOB_NAME}
+                        Build Number: ${currentBuild.number}
+                        Status: Failure
+
+                        Additional details can be found at: ${currentBuild.absoluteUrl}
+                    """,
+                    to: "${EMAIL_RECIPIENT}"
+                )
+            }
         }
     }
 }
