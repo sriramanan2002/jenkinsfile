@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EMAIL_RECIPIENT = 'blackslug69@gmail.com'
+        EMAIL_RECIPIENT = 'testsrn69@gmail.com'
         EMAIL_SUBJECT = 'Jenkins Pipeline Status'
     }
 
